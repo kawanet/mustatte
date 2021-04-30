@@ -6,6 +6,7 @@ all: lib/index.js
 	make -C browser $@
 
 clean:
+	/bin/rm -f lib/*.js test/*.js
 	# make -C test/spec $@
 	make -C asset $@
 	make -C browser $@
@@ -15,10 +16,10 @@ test: all mocha
 	make -C asset $@
 	make -C browser $@
 
-lib/%.ts: lib/%.js
+lib/%.js: lib/%.ts
 	./node_modules/.bin/tsc -p .
 
-test/%.ts: test/%.js
+test/%.js: test/%.ts
 	./node_modules/.bin/tsc -p .
 
 mocha: test/10.runtime.js
