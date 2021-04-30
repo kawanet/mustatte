@@ -1,12 +1,15 @@
-# Mustatte - Embeddable {{Mustache}}-like Tiny Templating Engine
- 
+# Mustatte
 [![Node.js CI](https://github.com/kawanet/mustatte/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/mustatte/actions/)
+[![npm version](https://badge.fury.io/js/mustatte.svg)](https://www.npmjs.com/package/mustatte)
+
+Embeddable `{{Mustache}}`-like Tiny Templating Engine
 
 - Templates: `{{#section}}` `{{> partial}}` `{{lambda}}` `{{/section}}`
 - Compiler: Precompile `.html` to `.js` for Node.js and Web browsers ready.
-- Embeddable: Tiny 1KB runtime. No dependency modules required when rendering.
+- Embeddable: Tiny 1.2KB runtime. No dependent modules required for rendering.
+- Reliability: Three years performances in production since 2018.
 
-## Synopsis
+## SYNOPSIS
 
 ```js
 const {compile} = require("mustatte");
@@ -20,12 +23,12 @@ const context = {name: "Ryu"};
 console.log(render(context)); // => "Hello, Ryu!"
 ```
 
-## CLI Compiler
+## CLI COMPILER
 
 ```sh
 mustatte --help
 
-mustatte --variable=exports --runtime=sync *.html --output=templates.js
+mustatte --variable=exports --runtime *.html --output=templates.js
 ```
 
 HTML Template: `names.html`
@@ -67,7 +70,7 @@ Result:
 </ul>
 ```
 
-## Templating Syntax
+## TEMPALTING SYNTAX
 
 The compiled render method accepts a pair of arguments: the main (current) context and the alt (fallback) context.
 
@@ -84,16 +87,16 @@ const render = compile(template);
 console.log(render(context, alt)); // => "[FOO]-[FOO]-[foo] [bar]--[bar]"
 ```
 
-Interpolation:
+### Interpolation
 
-| Prefix | Behavior | Example | Main context | Alt context  | HTML escape |
+| Prefix | Behavior | Example | Main context | Alt context | HTML escape |
 | --- | --- | --- | --- | --- | --- |
-| - | Normal | `{{foo.bar}}` | Yes (primary) | Yes (fallback) | Escaped |
-| `&` | Unescaped | `{{&foo.bar}}` | Yes (primary) | Yes (fallback) | Raw |
-| `.` | Main only | `{{.foo.bar}}` | Yes | No | Escaped |
-| `>` | Alt only | `{{>foo.bar}}` | No | Yes | Raw |
+| (none) | Normal | `{{ foo.bar }}` | Yes (primary) | Yes (secondary) | Escaped |
+| `&` | Unescaped | `{{& foo.bar }}` | Yes (primary) | Yes (secondary) | Raw |
+| `.` | Main only | `{{. foo.bar }}` | Yes | N/A | Escaped |
+| `>` | Alt only | `{{> foo.bar }}` | N/A | Yes | Raw |
 
-Section:
+### Sections
 
 ```
 {{# section }} show this when true {{/ section }}
@@ -101,13 +104,17 @@ Section:
 {{^ inverted }} show this when false {{/ inverted }}
 ```
 
-Comment: (just ignored)
+### Comments
+
+`!` indicates comments which are just ignored.
 
 ```
 {{! comment }}
 ```
 
-Triple Mustache: (rendered without HTML escaping)
+### Triple Mustache
+
+`&` renders a raw HTML string without escaped.
 
 ```
 {{{ foo.bar }}}
@@ -115,13 +122,17 @@ Triple Mustache: (rendered without HTML escaping)
 {{& foo.bar }} // same
 ```
 
-Patial: (as a lambda stored in the alt context)
+### Patial
+
+`>` refers the alt context which would execute Lambdas in safe.
 
 ```
 {{> partial }}
 ```
 
-Altering Delimiter: (tag switching)
+### Altering Delimiter
+
+`=` makes the templating tag changed.
 
 ```
 {{= <% %> =}}
@@ -129,7 +140,7 @@ Altering Delimiter: (tag switching)
 <%# section %> <% foo.bar %> <%/ section %>
 ```
 
-## Incompatibility
+## COMPATIBILITY
 
 It passes more than 90% of the original [Mustache spec](https://github.com/mustache/spec) test suite.
 The rest of the tests are skipped in due to changes made for security or performance reasons.
@@ -141,11 +152,17 @@ The following minor features are not supported by the module.
 - Lambdas used for inverted sections should be considered truthy.
 - Lambdas used for sections should receive the raw section string.
 
-### GitHub
+### LINKS
 
-- [https://github.com/kawanet/mustatte](https://github.com/kawanet/mustatte)
+- https://github.com/kawanet/mustatte
+- https://github.com/kawanet/promistache
+- https://www.npmjs.com/package/handlebars
+- https://www.npmjs.com/package/hogan.js
+- https://www.npmjs.com/package/mustatte
 
-### The MIT License (MIT)
+### LICENSE
+
+MIT License
 
 Copyright (c) 2018-2021 Yusuke Kawasaki
 
