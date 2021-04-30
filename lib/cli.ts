@@ -2,7 +2,7 @@
 
 import type {Mustatte} from "../";
 import * as fs from "fs";
-import {compile, parse} from "./";
+import {compile, parse} from "../";
 
 interface Options extends Mustatte.Options {
     "--"?: string[];

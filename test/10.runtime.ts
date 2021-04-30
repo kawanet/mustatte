@@ -1,53 +1,53 @@
 #!/usr/bin/env mocha -R spec
 
 import {strict as assert} from "assert";
-import {compile} from "../";
+import {runtime} from "../lib/runtime";
 
 const TITLE = __filename.split("/").pop();
 
-describe(TITLE, function () {
-    compile((G, I, S, U, V) => {
+describe(TITLE, () => {
+    runtime((G, I, S, U, V) => {
 
-        it("text", function () {
+        it("text", () => {
             const t = G("Hello, Mustatte!");
             assert.equal(t(), "Hello, Mustatte!");
         });
 
-        it("text fragment", function () {
+        it("text fragment", () => {
             const t = G(["Hello, ", null, undefined, "Mustatte!"]);
             assert.equal(t(), "Hello, Mustatte!");
         });
 
-        it("variable", function () {
+        it("variable", () => {
             const t = V("name");
             assert.equal(t({"name": "Mustatte"}), "Mustatte");
         });
 
-        it("text and variable", function () {
+        it("text and variable", () => {
             const t = G(["Hello, ", V("name"), "!"]);
             assert.equal(t({"name": "Mustatte"}), "Hello, Mustatte!");
             assert.equal(t(), "Hello, !");
         });
 
-        it("section", function () {
+        it("section", () => {
             const t = G([S("foo", "FOO"), S("bar", "BAR")]);
             assert.equal(t({"foo": true, "bar": false}), "FOO");
             assert.equal(t(), "");
         });
 
-        it("inverted section", function () {
+        it("inverted section", () => {
             const t = G([I("foo", "FOO"), I("bar", "BAR")]);
             assert.equal(t({"foo": true, "bar": false}), "BAR");
             assert.equal(t(), "FOOBAR");
         });
 
-        it("escape", function () {
+        it("escape", () => {
             const t = G([V("amp"), "<&>", U("amp")]);
             assert.equal(t({"amp": "<&>"}), "&lt;&amp;&gt;<&><&>");
             assert.equal(t(), "<&>");
         });
 
-        it("deep variable", function () {
+        it("deep variable", () => {
             const t = G(["[", V("aa.bb.cc"), "]"]);
 
             assert.equal(t({aa: {bb: {cc: "DD"}}}), "[DD]");
@@ -56,7 +56,7 @@ describe(TITLE, function () {
             assert.equal(t(), "[]");
         });
 
-        it("lambda", function () {
+        it("lambda", () => {
             const t = G(V("aa.bb"));
 
             const context = {aa: {bb: bb}};
@@ -72,7 +72,7 @@ describe(TITLE, function () {
             }
         });
 
-        it("partial", function () {
+        it("partial", () => {
             const t = G(["[", V("foo"), ":", U(">foo"), "]"]);
             const context = {foo: "context"};
             const alt = {foo: foo};
@@ -87,7 +87,7 @@ describe(TITLE, function () {
             }
         });
 
-        it("section and partial", function () {
+        it("section and partial", () => {
             const t = G(["[ ", S("foo", ["[", U(">baz"), "]"]), " ]"]);
             const bar = {};
             const context = {foo: [bar, bar], baz: "context"};

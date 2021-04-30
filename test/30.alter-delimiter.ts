@@ -6,7 +6,7 @@ import {compile} from "../";
 
 const TITLE = __filename.split("/").pop();
 
-describe(TITLE, function () {
+describe(TITLE, () => {
     const sample1 = fs.readFileSync(__dirname + "/sample/sample1.html", "utf-8");
     const sample2 = fs.readFileSync(__dirname + "/sample/sample2.html", "utf-8");
 

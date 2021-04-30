@@ -5,28 +5,28 @@ import {compile} from "../";
 
 const TITLE = __filename.split("/").pop();
 
-describe(TITLE, function () {
+describe(TITLE, () => {
 
-    it("text", function () {
+    it("text", () => {
         const t = compile("foo");
 
         assert.equal(t(), "foo");
     });
 
-    it("special characters", function () {
+    it("special characters", () => {
         const t = compile("\x00\t\r\n\"\\\x7f");
 
         assert.equal(t(), "\x00\t\r\n\"\\\x7f");
     });
 
-    it("variable", function () {
+    it("variable", () => {
         const t = compile("foo:{{bar}}:{{baz}}:quz");
 
         assert.equal(t({bar: "BAR"}), "foo:BAR::quz");
         assert.equal(t({baz: "BAZ"}), "foo::BAZ:quz");
     });
 
-    it("section", function () {
+    it("section", () => {
         const t = compile("foo:{{#bar}}:baz:{{/bar}}:quz");
 
         assert.equal(t({bar: "BAR"}), "foo::baz::quz");
@@ -34,28 +34,28 @@ describe(TITLE, function () {
         assert.equal(t({bar: [1, 2, 3]}), "foo::baz::baz::baz::quz");
     });
 
-    it("section with variable", function () {
+    it("section with variable", () => {
         const t = compile("foo:{{#bar}}:{{baz}}:{{/bar}}:quz");
 
         assert.equal(t({bar: "BAR", baz: "BAZ"}), "foo::BAZ::quz");
         assert.equal(t({bar: [{baz: "BAZ1"}, {baz: "BAZ2"}, {baz: "BAZ3"}]}), "foo::BAZ1::BAZ2::BAZ3::quz");
     });
 
-    it("empty section", function () {
+    it("empty section", () => {
         const t = compile("foo:{{#bar}}{{/bar}}:quz");
 
         assert.equal(t({bar: "BAR"}), "foo::quz");
         assert.equal(t(), "foo::quz");
     });
 
-    it("inverted section", function () {
+    it("inverted section", () => {
         const t = compile("foo:{{^bar}}:baz:{{/bar}}:quz");
 
         assert.equal(t({bar: "BAR"}), "foo::quz");
         assert.equal(t(), "foo::baz::quz");
     });
 
-    it("nested section", function () {
+    it("nested section", () => {
         const t = compile("foo{{#bar}}[{{#baz}}[quz]{{/baz}}]{{/bar}}qux");
 
         assert.equal(t({bar: "BAR", baz: "BAZ"}), "foo[[quz]]qux");
@@ -63,21 +63,21 @@ describe(TITLE, function () {
         assert.equal(t(), "fooqux");
     });
 
-    it("unescaped", function () {
+    it("unescaped", () => {
         const t = compile("foo:{{&bar}}:{{bar}}:{{{bar}}}:baz");
 
         assert.equal(t({bar: '<"&>'}), 'foo:<"&>:&lt;&quot;&amp;&gt;:<"&>:baz');
         assert.equal(t(), "foo::::baz");
     });
 
-    it("deep variable", function () {
+    it("deep variable", () => {
         const t = compile("[{{foo.bar.baz}}]");
 
         assert.equal(t({foo: {bar: {baz: "BAZ"}}}), "[BAZ]");
         assert.equal(t(), "[]");
     });
 
-    it("deep variable section", function () {
+    it("deep variable section", () => {
         const t = compile("[{{#foo.bar.baz}}quz{{/foo.bar.baz}}]");
 
         assert.equal(t({foo: {bar: {baz: "BAZ"}}}), "[quz]");
@@ -85,20 +85,20 @@ describe(TITLE, function () {
         assert.equal(t(), "[]");
     });
 
-    it("white space", function () {
+    it("white space", () => {
         const t = compile("[{{# foo }}{{ bar }}{{/ foo }}]");
 
         assert.equal(t({foo: "FOO", bar: "BAR"}), "[BAR]");
         assert.equal(t(), "[]");
     });
 
-    it("comment", function () {
+    it("comment", () => {
         const t = compile("[{{! foo }}][{{! foo \n bar }}][{{! bar }}]");
 
         assert.equal(t(), "[][][]");
     });
 
-    it("falsy values", function () {
+    it("falsy values", () => {
         const t = compile("[{{ zero }}][{{ null }}][{{ undef }}][{{ false }}]");
         const c = {"zero": 0, "null": null as object, "false": false};
 

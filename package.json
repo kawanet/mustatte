@@ -54,6 +54,7 @@
     "fixpack": "fixpack",
     "mocha": "./node_modules/.bin/mocha test",
     "test": "make test",
+    "test-browser": "make -C browser && open browser/test.html",
     "watch": "make watch"
   },
   "types": "types/index.d.ts"

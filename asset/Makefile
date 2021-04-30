@@ -19,6 +19,6 @@ clean:
 	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@
 
 ../asset/help.js: ../asset/help.txt ../asset/runtime.min.js
-	node ../lib/cli.js --variable=exports --tag="[[ ]]" --runtime=sync ../asset/help.txt --output=$@
+	node ../lib/cli.js --variable=exports --tag="[[ ]]" --runtime ../asset/help.txt --output=$@
 
 .PHONY: all clean test

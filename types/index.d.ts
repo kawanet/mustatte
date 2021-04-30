@@ -5,16 +5,6 @@ export namespace Mustatte {
         tag?: string;
     }
 
-    interface Compiler {
-        (source: string, options?: Options): Render;
-
-        (source: RenderDef, options?: Options): Render;
-    }
-
-    interface Parser {
-        (source: string, options: Options): string
-    }
-
     type Context = any; // { [key: string]: Context | Context[] };
     type Writer = (str: string) => void;
     type Render = (context?: Context, alt?: Context, write?: Writer) => string;
@@ -29,5 +19,6 @@ export namespace Mustatte {
     type RenderDef = (G: G, I: I, S: S, U: U, V: V) => Render;
 }
 
-export const compile: Mustatte.Compiler;
-export const parse: Mustatte.Parser;
+export function compile(source: string, options?: Mustatte.Options): Mustatte.Render;
+
+export function parse(source: string, options?: Mustatte.Options): string

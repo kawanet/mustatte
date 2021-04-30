@@ -4,15 +4,12 @@ import {runtime} from "./runtime";
 import {parse} from "./parse";
 import type {Mustatte} from "../";
 
-type Compiler = Mustatte.Compiler;
-type RenderDef = Mustatte.RenderDef;
 type Options = Mustatte.Options;
+type Render = Mustatte.Render;
+type RenderDef = Mustatte.RenderDef;
 
-export const compile: Compiler = (source: string | RenderDef, options?: Options) => {
-    if ("function" !== typeof source) {
-        const js = parse(source, options);
-        source = Function("G", "I", "S", "U", "V", "return " + js) as RenderDef;
-    }
-
-    return runtime(source);
+export function compile(source: string, options?: Options): Render {
+    const js = parse(source, options);
+    const fn = Function("G", "I", "S", "U", "V", "return " + js) as RenderDef;
+    return runtime(fn);
 }

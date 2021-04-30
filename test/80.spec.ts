@@ -46,16 +46,13 @@ const SPECS = {
     "~lambdas": require("./spec/specs/~lambdas.json"),
 } as { [name: string]: { tests: Spec[] } };
 
-describe(TITLE, function () {
+describe(TITLE, () => {
     Object.keys(SPECS).forEach(name => {
         describe(name, () => {
             SPECS[name].tests.forEach(test => {
-                const name = test.name;
-                const desc = test.desc;
+                const {name, desc, partials, template} = test;
                 const context = test.data;
-                const partials = test.partials;
-                const template = test.template;
-                const lambda = context.lambda && context.lambda.js;
+                const lambda = context.lambda?.js;
 
                 if (ONLY && name.indexOf(ONLY) < 0 && desc.indexOf(ONLY) < 0) return;
 
@@ -65,7 +62,7 @@ describe(TITLE, function () {
                     return it.skip(name + ": " + desc);
                 }
 
-                it(name, function () {
+                it(name, () => {
                     let t: Render;
                     try {
                         t = compile(template);
@@ -77,7 +74,7 @@ describe(TITLE, function () {
                     const partial = {} as { [name: string]: Render };
 
                     if (partials) {
-                        Object.keys(partials).forEach(function (name) {
+                        Object.keys(partials).forEach(name => {
                             partial[name] = compile(partials[name]);
                         });
                     }

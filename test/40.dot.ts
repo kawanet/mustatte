@@ -6,7 +6,7 @@ import type {Mustatte} from "../";
 
 const TITLE = __filename.split("/").pop();
 
-describe(TITLE, function () {
+describe(TITLE, () => {
     runTest();
 });
 

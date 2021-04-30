@@ -1,4 +1,4 @@
-// runtime-sync.ts
+// runtime.ts
 
 import type {Mustatte} from "../";
 
@@ -16,7 +16,9 @@ const ESCAPE_MAP = {
     '"': "&quot;"
 } as { [chr: string]: string };
 
-export const runtime = (f: Mustatte.RenderDef) => f(G, I, S, U, V);
+export function runtime(fn: Mustatte.RenderDef) {
+    return fn(G, I, S, U, V);
+}
 
 /**
  * Group

@@ -2,7 +2,7 @@
 
 import type {Mustatte} from "../";
 
-export function parse(source: string, options: Mustatte.Options): string {
+export function parse(source: string, options?: Mustatte.Options): string {
     const tagStack = [] as string[];
     let tagLast: string;
     let comma = "";
@@ -26,7 +26,7 @@ export function parse(source: string, options: Mustatte.Options): string {
 
     source += "";
 
-    let tag = options && options.tag;
+    let tag = options?.tag;
 
     if (!tag) {
         source.replace(/{{=(.*?)=}}/, (match: string, t: string, pos: number): string => {
