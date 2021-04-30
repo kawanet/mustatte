@@ -21,4 +21,4 @@ export namespace Mustatte {
 
 export function compile(source: string, options?: Mustatte.Options): Mustatte.Render;
 
-export function parse(source: string, options?: Mustatte.Options): string
+export function parse(source: string, options?: Mustatte.Options): string;

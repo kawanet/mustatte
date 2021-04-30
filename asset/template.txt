@@ -1,0 +1,9 @@
+if (!!![[variable]]) var [[variable]] = {};
+
+[[# templates ]]
+[[variable]]["[[namespace]][[name]]"] = function(G,I,S,U,V){return [[&code]]};
+[[/ templates ]]
+
+[[# runtime ]]
+!function(r,t){!function(exports){[[>loadRuntime]]}(r);Object.keys(t).forEach(function(k){const o=t[k];t[k]=function(c,a){return(t[k]=r.runtime(o))(c,a)}})}({},[[variable]]);
+[[/ runtime ]]

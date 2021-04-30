@@ -2,6 +2,7 @@
 
 import type {Mustatte} from "../";
 
+type RenderDef = Mustatte.RenderDef;
 type Renders = Mustatte.Renders;
 type Render = Mustatte.Render;
 type Context = Mustatte.Context;
@@ -16,7 +17,7 @@ const ESCAPE_MAP = {
     '"': "&quot;"
 } as { [chr: string]: string };
 
-export function runtime(fn: Mustatte.RenderDef) {
+export function runtime(fn: RenderDef): Render {
     return fn(G, I, S, U, V);
 }
 
@@ -139,9 +140,9 @@ function U(key: string): Render {
  * @private
  */
 
-function writable(func: Render, context: Context, alt: Context): string {
+function writable(item: Render, context: Context, alt: Context): string {
     let result: string[];
-    func(context, alt, write);
+    item(context, alt, write);
     return result ? result.join("") : "";
 
     function write(v: string) {
@@ -152,24 +153,19 @@ function writable(func: Render, context: Context, alt: Context): string {
     }
 }
 
-function series(item: (string | Render | Renders), context: Context, alt: Context, write: Writer) {
-    forEach(item, it);
-
-    function it(item: string | Render) {
-        if ("function" === typeof item) {
-            item = item(context, alt);
-            forEach(item, it);
-        } else {
-            write(item);
-        }
-    }
-}
-
-function forEach(items: (string | Render | Renders), it: (item: string | Render) => void) {
+function series(items: (string | Render | Renders), context: Context, alt: Context, write: Writer) {
     if (isArray(items)) {
         items.forEach(it);
     } else {
         it(items);
+    }
+
+    function it(item: string | Render) {
+        if ("function" === typeof item) {
+            series(item(context, alt), context, alt, write);
+        } else {
+            write(item);
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash -c make
 
-ALL=../asset/runtime.min.js ../asset/help.js
+ALL=runtime.min.js asset.js
 
 all: $(ALL)
 
@@ -11,14 +11,14 @@ test: all
 clean:
 	/bin/rm -fr $(ALL) build/
 
-../asset/runtime.min.js: ../build/runtime.js
+runtime.min.js: ../build/runtime.js
 	../node_modules/.bin/terser -e exports:exports -c -m -o $@ $<
 
 ../build/runtime.js: ../lib/runtime.ts
 	../node_modules/.bin/tsc -p ../asset
 	perl -i -pe 's#^ *("use strict"|Object.defineProperty.*"__esModule"|(exports.* =)+ void 0)#// $$&#mg' $@
 
-../asset/help.js: ../asset/help.txt ../asset/runtime.min.js
-	node ../lib/cli.js --variable=exports --tag="[[ ]]" --runtime ../asset/help.txt --output=$@
+asset.js: help.txt runtime.min.js
+	node ../lib/cli.js --variable=exports --tag="[[ ]]" --runtime help.txt --output=$@
 
 .PHONY: all clean test
