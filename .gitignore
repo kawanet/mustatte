@@ -1,0 +1,13 @@
+*~
+.DS_Store
+.Thumbs
+._*
+.idea/
+asset/*.js
+build/
+lib/*.js
+node_modules
+npm-debug.log*
+package-lock.json
+test/*.js
+test/.watching

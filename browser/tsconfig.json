@@ -1,0 +1,22 @@
+{
+  "include": [
+    "../lib"
+  ],
+  "exclude": [
+    "../lib/cli.ts"
+  ],
+  "compilerOptions": {
+    "module": "AMD",
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "removeComments": true,
+    "outFile": "../build/mustatte.amd.js",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "target": "ES5"
+  }
+}

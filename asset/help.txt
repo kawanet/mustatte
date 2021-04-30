@@ -1,0 +1,14 @@
+USAGE:   mustatte [OPTIONS] FILES
+
+OPTIONS: --help                        shows this message
+         --namespace=""                prepend string to template names
+         --output="templates.js"       outputs JavaScript file
+         --runtime                     embeds render runtime
+         --tag="{{ }}"                 alternates tag delimiter
+         --trim                        removes white spaces
+         --variable="exports"          variable name to export
+
+EXAMPLE: mustatte templates.html > templates.js
+         mustatte ./templates/*.html --output=templates.js --runtime --trim --variable=exports
+
+MORE:    [[package.homepage]]
