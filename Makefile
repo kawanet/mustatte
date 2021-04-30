@@ -1,6 +1,6 @@
 #!/usr/bin/env bash -c make
 
-all: lib/index.js
+all: node_modules lib/index.js
 	make -C test/spec $@
 	make -C asset $@
 	make -C browser $@
@@ -15,6 +15,9 @@ test: all mocha
 	make -C test/spec $@
 	make -C asset $@
 	make -C browser $@
+
+node_modules:
+	npm install
 
 lib/%.js: lib/%.ts
 	./node_modules/.bin/tsc -p .
