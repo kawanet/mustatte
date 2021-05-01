@@ -13,6 +13,7 @@ test: all
 		-t [ browserify-sed 's#require\("../"\)#require("../browser/import")#' ]
 
 ../dist/mustatte.min.js: ../build/mustatte.bundle.js
+	mkdir -p ../dist/
 	../node_modules/.bin/terser -c -m -o $@ $<
 
 ../build/mustatte.bundle.js: ../build/mustatte.amd.js wrap.js
