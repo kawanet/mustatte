@@ -3,6 +3,7 @@
     "../lib"
   ],
   "exclude": [
+    "../lib/bench.ts",
     "../lib/cli.ts"
   ],
   "compilerOptions": {
