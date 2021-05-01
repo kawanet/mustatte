@@ -26,6 +26,7 @@
     "LICENSE",
     "README.md",
     "asset/*.js",
+    "asset/*.txt",
     "browser/*.js",
     "dist/*.js",
     "lib/*.js",
