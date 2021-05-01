@@ -133,15 +133,18 @@ function U(key: string): Render {
  */
 
 function series(items: Item | Item[], contexts: Context[], alt: Context): string {
-    let result: string[];
+    let result: string;
     contexts.forEach(it);
-    return result ? result.join("") : "";
+    return result || "";
 
     function it(ctx: Context) {
         const v = render(items, ctx, alt);
         if (v != null) {
-            if (!result) result = [];
-            result.push(v);
+            if (result == null) {
+                result = v; // first item
+            } else {
+                result += v; // later item
+            }
         }
     }
 }
