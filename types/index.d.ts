@@ -5,14 +5,12 @@ export namespace Mustatte {
         tag?: string;
     }
 
-    type Context = any; // { [key: string]: Context | Context[] };
-    type Writer = (str: string) => void;
-    type Render = (context?: Context, alt?: Context, write?: Writer) => string;
-    type Renders = string | Render | (string | Render)[];
+    type Render = (context?: any, alt?: any) => string;
+    type Item = string | Render;
 
-    type G = (items: Renders) => Render; // Group
-    type I = (key: string, items: Renders) => Render; // Inverted Section
-    type S = (key: string, items: Renders) => Render; // Section
+    type G = (items: Item | Item[]) => Render; // Group
+    type I = (key: string, items: Item | Item[]) => Render; // Inverted Section
+    type S = (key: string, items: Item | Item[]) => Render; // Section
     type U = (key: string) => Render; // Variable Unescaped
     type V = (key: string) => Render; // Variable Escaped
 

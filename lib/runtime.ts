@@ -3,10 +3,9 @@
 import type {Mustatte} from "../";
 
 type RenderDef = Mustatte.RenderDef;
-type Renders = Mustatte.Renders;
 type Render = Mustatte.Render;
-type Context = Mustatte.Context;
-type Writer = Mustatte.Writer;
+type Item = Mustatte.Item;
+type Context = any; // { [key: string]: Context | Context[] };
 
 const isArray = Array.isArray;
 
@@ -25,54 +24,46 @@ export function runtime(fn: RenderDef): Render {
  * Group
  */
 
-function G(items: Renders): Render {
-    let GG: Render;
-
-    return GG = (context, alt, write) => {
-        if (!write) return writable(GG, context, alt);
-        series(items, context, alt, write);
-    }
+function G(items: Item | Item[]): Render {
+    return (context, alt) => render(items, context, alt);
 }
 
 /**
  * Section
  */
 
-function S(key: string, items: Renders): Render {
-    let SS: Render;
+function S(key: string, items: Item | Item[]): Render {
     const dig = U(key);
 
-    return SS = (context, alt, write) => {
-        if (!write) return writable(SS, context, alt);
-
+    return (context, alt) => {
         const cond = dig(context, alt);
-        const it = (ctx: Context) => series(items, ctx, alt, write);
 
         if (isArray(cond)) {
-            cond.forEach(it);
+            return series(items, cond, alt);
         } else if (cond) {
             // switch context only when an object given
-            it("object" === typeof cond ? cond : context);
+            const ctx = ("object" === typeof cond) ? cond : context;
+            return render(items, ctx, alt);
         }
-    }
+    };
 }
 
 /**
  * Inverted Section
  */
 
-function I(key: string, items: Renders): Render {
-    let II: Render;
+function I(key: string, items: Item | Item[]): Render {
     const dig = U(key);
-    return II = (context, alt, write) => {
-        if (!write) return writable(II, context, alt);
 
+    return (context, alt) => {
         const cond = dig(context, alt);
 
+        // Empty lists should behave like falsey values.
+        // Lists should behave like truthy values.
         if (!cond || (isArray(cond) && !cond.length)) {
-            series(items, context, alt, write);
+            return render(items, context, alt);
         }
-    }
+    };
 }
 
 /**
@@ -81,6 +72,7 @@ function I(key: string, items: Renders): Render {
 
 function V(key: string): Render {
     const dig = U(key);
+
     return (context, alt) => esc(dig(context, alt));
 }
 
@@ -140,12 +132,13 @@ function U(key: string): Render {
  * @private
  */
 
-function writable(item: Render, context: Context, alt: Context): string {
+function series(items: Item | Item[], contexts: Context[], alt: Context): string {
     let result: string[];
-    item(context, alt, write);
+    contexts.forEach(it);
     return result ? result.join("") : "";
 
-    function write(v: string) {
+    function it(ctx: Context) {
+        const v = render(items, ctx, alt);
         if (v != null) {
             if (!result) result = [];
             result.push(v);
@@ -153,18 +146,23 @@ function writable(item: Render, context: Context, alt: Context): string {
     }
 }
 
-function series(items: (string | Render | Renders), context: Context, alt: Context, write: Writer) {
+function render(items: Item | Item[], context: Context, alt: Context): string {
+    let result: string[];
     if (isArray(items)) {
         items.forEach(it);
     } else {
         it(items);
     }
+    return result ? result.join("") : "";
 
-    function it(item: string | Render) {
+    function it(item: Item) {
         if ("function" === typeof item) {
-            series(item(context, alt), context, alt, write);
-        } else {
-            write(item);
+            item = item(context, alt);
+        }
+
+        if (item != null) {
+            if (!result) result = [];
+            result.push(item);
         }
     }
 }
