@@ -73,7 +73,7 @@ export function parse(source: string, options?: Mustatte.Options): string {
     array.forEach(function (str, col) {
         if (col & 1) {
             addTag(str);
-        } else {
+        } else if (str) {
             addString(str);
         }
     });
