@@ -1,7 +1,7 @@
 #!/usr/bin/env mocha -R spec
 
 import {strict as assert} from "assert";
-import {runtime} from "../lib/runtime";
+import {runtime} from "../";
 
 const TITLE = __filename.split("/").pop();
 

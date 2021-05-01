@@ -17,6 +17,11 @@ export namespace Mustatte {
     type RenderDef = (G: G, I: I, S: S, U: U, V: V) => Render;
 }
 
+// compile template string to render function
 export function compile(source: string, options?: Mustatte.Options): Mustatte.Render;
 
+// compile template string to template function
 export function parse(source: string, options?: Mustatte.Options): string;
+
+// apply mustatte runtime to pre-compiled template function
+export function runtime(def: Mustatte.RenderDef): Mustatte.Render;

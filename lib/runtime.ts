@@ -16,8 +16,8 @@ const ESCAPE_MAP = {
     '"': "&quot;"
 } as { [chr: string]: string };
 
-export function runtime(fn: RenderDef): Render {
-    return fn(G, I, S, U, V);
+export function runtime(def: RenderDef): Render {
+    return def(G, I, S, U, V);
 }
 
 /**
