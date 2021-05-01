@@ -23,12 +23,14 @@ const context = {name: "Ryu"};
 console.log(render(context)); // => "Hello, Ryu!"
 ```
 
-## CLI COMPILER
+## COMPILER CLI
+
+`mustatte` CLI tool generates a `.js` file which implements render functions. 
 
 ```sh
 mustatte --help
 
-mustatte --variable=exports --runtime *.html --output=templates.js
+mustatte --variable=exports --runtime --output=templates.js *.html
 ```
 
 HTML Template: `names.html`
@@ -72,7 +74,7 @@ Result:
 
 ## TEMPALTING SYNTAX
 
-The compiled render method accepts a pair of arguments: the main (current) context and the alt (fallback) context.
+The compiled render function accepts a pair of arguments: the main (current) context and the alt (fallback) context.
 
 ```
 const {compile} = require("mustatte");
@@ -142,7 +144,7 @@ console.log(render(context, alt)); // => "[FOO]-[FOO]-[foo] [bar]--[bar]"
 
 ## COMPATIBILITY
 
-It passes more than 90% of the original [Mustache spec](https://github.com/mustache/spec) test suite.
+It passes 88% of the original [Mustache spec](https://github.com/mustache/spec) test suite.
 The rest of the tests are skipped in due to changes made for security or performance reasons.
 The following minor features are not supported by the module.
 
@@ -151,6 +153,23 @@ The following minor features are not supported by the module.
 - Each line of the partial should be indented before rendering.
 - Lambdas used for inverted sections should be considered truthy.
 - Lambdas used for sections should receive the raw section string.
+
+## BROWSERS
+
+Less than 4KB minified build is available for Web browsers.
+
+- https://cdn.jsdelivr.net/npm/mustatte/dist/mustatte.min.js
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/mustatte/dist/mustatte.min.js"></script>
+<script>
+  const {compile} = Mustatte;
+  const template = "hello, {{name}}!";
+  const render = compile(template);
+  const context = {name: "Ryu"};
+  document.body.innerHTML = render(context);
+</script>
+```
 
 ### LINKS
 
