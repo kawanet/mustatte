@@ -147,13 +147,13 @@ function series(items: Item | Item[], contexts: Context[], alt: Context): string
 }
 
 function render(items: Item | Item[], context: Context, alt: Context): string {
-    let result: string[];
+    let result: string;
     if (isArray(items)) {
         items.forEach(it);
     } else {
         it(items);
     }
-    return result ? result.join("") : "";
+    return result || "";
 
     function it(item: Item) {
         if ("function" === typeof item) {
@@ -161,8 +161,11 @@ function render(items: Item | Item[], context: Context, alt: Context): string {
         }
 
         if (item != null) {
-            if (!result) result = [];
-            result.push(item);
+            if (result == null) {
+                result = item; // first item
+            } else {
+                result += item; // later item
+            }
         }
     }
 }
