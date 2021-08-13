@@ -1,6 +1,8 @@
 # Mustatte
+
 [![Node.js CI](https://github.com/kawanet/mustatte/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/mustatte/actions/)
-[![npm version](https://badge.fury.io/js/mustatte.svg)](https://www.npmjs.com/package/mustatte)
+[![npm version](https://img.shields.io/npm/v/mustatte)](https://www.npmjs.com/package/mustatte)
+[![minified size](https://img.shields.io/bundlephobia/min/mustatte)](https://cdn.jsdelivr.net/npm/mustatte/dist/mustatte.min.js)
 
 Embeddable `{{Mustache}}`-like Tiny Templating Engine
 
